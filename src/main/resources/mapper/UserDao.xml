@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sinux.ssm.dao.UserDao">
+	<!-- 查询所有用户 -->
+	<select id="findAllUser" resultType="com.sinux.ssm.entity.User">
+		select * from users
+	</select>
+	<!-- 根据指定条件分页查询用户 -->
+	<select id="findPageUser" resultType="com.sinux.ssm.entity.User">
+		select * from users limit
+		#{0},#{1};
+	</select>
+	<!-- 根据用户ID号查询用户 -->
+	<select id="findAllUserList" parameterType="int"
+		resultType="com.sinux.ssm.entity.User">
+		select * from users where uid=#{uid};
+	</select>
+	<!-- 根据学号查询用户信息 -->
+	<select id="findUser" parameterType="java.lang.String"
+		resultType="int">
+		select count(number) from users where number=#{number};
+	</select>
+	<!--根据用户名和密码查询用户信息 -->
+	<select id="findUserInfo" parameterType="com.sinux.ssm.entity.User"
+		resultType="com.sinux.ssm.entity.User">
+		select * from users where loginname=#{loginname} and
+		password=#{password};
+	</select>
+	<!--向数据库添加用户记录 -->
+	<insert id="savaUserList" parameterType="com.sinux.ssm.entity.User">
+		INSERT INTO
+		users(name,number,loginname,password,age)
+		VALUES(#{name},#{number},#{loginname},#{password},#{age});
+	</insert>
+	<!--删除用户信息 -->
+	<select id="deleteUser" parameterType="int" resultType="java.lang.String">
+		delete from users where uid in
+		<foreach item="empnoItem" collection="array" open="("
+			separator="," close=")">
+			(#{empnoItem})
+		</foreach>
+
+	</select>
+</mapper>
